@@ -1,0 +1,6 @@
+@FeeCalculator_HostAddress = http://localhost:5148
+
+GET {{FeeCalculator_HostAddress}}/api/fees/estimate?amount=10&preferred=true
+Accept: application/json
+
+###

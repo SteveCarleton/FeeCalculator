@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="FeeCalculatorService.UnitTests/FeeCalculatorService.UnitTests.csproj" Id="a2a36c7a-1110-43fe-b012-2dbcb6f8083f" />
+  <Project Path="FeeCalculatorService/FeeCalculatorService.csproj" />
+</Solution>
