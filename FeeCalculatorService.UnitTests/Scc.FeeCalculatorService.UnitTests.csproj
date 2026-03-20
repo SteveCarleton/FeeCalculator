@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FeeCalculatorService\FeeCalculatorService.csproj" />
+    <ProjectReference Include="..\FeeCalculatorService\Scc.FeeCalculatorService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

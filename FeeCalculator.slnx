@@ -2,6 +2,6 @@
   <Folder Name="/Solution Items/">
     <File Path="Readme.txt" />
   </Folder>
-  <Project Path="FeeCalculatorService.UnitTests/FeeCalculatorService.UnitTests.csproj" Id="a2a36c7a-1110-43fe-b012-2dbcb6f8083f" />
-  <Project Path="FeeCalculatorService/FeeCalculatorService.csproj" />
+  <Project Path="FeeCalculatorService.UnitTests/Scc.FeeCalculatorService.UnitTests.csproj" Id="a2a36c7a-1110-43fe-b012-2dbcb6f8083f" />
+  <Project Path="FeeCalculatorService/Scc.FeeCalculatorService.csproj" />
 </Solution>
