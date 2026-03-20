@@ -11,6 +11,12 @@ public class FeeCalculatorAppService(IOptions<FeeOptions> options, ILogger<FeeCa
 
     public FeeResult Calculate(decimal amount, bool preferredCustomer)
     {
+        if (amount <= 0)
+        {
+            _logger.LogError("Invalid amount: {Amount}", amount);
+            throw new InvalidAmountException();
+        }
+
         _logger.LogInformation("Calculation started");
 
         FeeResult result = new()
@@ -35,5 +41,12 @@ public class FeeCalculatorAppService(IOptions<FeeOptions> options, ILogger<FeeCa
         }
 
         return result;
+    }
+}
+
+public class InvalidAmountException : SystemException
+{
+    public InvalidAmountException() : base("Amount must be greater than zero.")
+    {
     }
 }

@@ -9,21 +9,18 @@ namespace FeeCalculatorService.UnitTests;
 
 public class FeeCalculatorUnitTests
 {
+    private IOptions<FeeOptions> options = default!;
+    private readonly Mock<ILogger<FeeCalculatorAppService>> loggerMock = new();
+
+    private decimal inputAmount = 10m;
+    private bool preferredCustomer = false;
+
     [Fact]
     public void NonPreferredCustomerNocap_ReturnsOkay()
     {
         // Arrange
 
-        FeeOptions feeOptions = new();
-        var options = Options.Create(feeOptions);
-        options.Value.BaseRate = 0.05m;
-        options.Value.MaxFee = 250.0m;
-
-        Mock<ILogger<FeeCalculatorAppService>> loggerMock = new();
-
-        const decimal inputAmount = 10m;
-        const bool preferredCustomer = false;
-
+        ArrangeFeeOptions();
         FeeCalculatorAppService appService = new(options, loggerMock.Object);
 
         // Act
@@ -32,6 +29,14 @@ public class FeeCalculatorUnitTests
         // Assert
 
         Assert.Equal(inputAmount * options.Value.BaseRate, result.CalculatedFee);
+
+        loggerMock.Verify(logger =>
+            logger.Log(
+                LogLevel.Information,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((value, _) => value.ToString()!.Contains("Calculation started")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()));
     }
 
     [Fact]
@@ -39,17 +44,8 @@ public class FeeCalculatorUnitTests
     {
         // Arrange
 
-        FeeOptions feeOptions = new();
-        var options = Options.Create(feeOptions);
-        options.Value.BaseRate = 0.05m;
-        options.Value.MaxFee = 250.0m;
-        options.Value.PreferredCustomerDiscount = 0.01m;
-
-        Mock<ILogger<FeeCalculatorAppService>> loggerMock = new();
-
-        const decimal inputAmount = 10m;
-        const bool preferredCustomer = true;
-
+        ArrangeFeeOptions();
+        preferredCustomer = true;
         FeeCalculatorAppService appService = new(options, loggerMock.Object);
 
         // Act
@@ -59,6 +55,14 @@ public class FeeCalculatorUnitTests
 
         Assert.Equal(options.Value.BaseRate - options.Value.PreferredCustomerDiscount, result.EffectiveRate);
         Assert.Equal(inputAmount * result.EffectiveRate, result.CalculatedFee);
+
+        loggerMock.Verify(logger =>
+            logger.Log(
+                LogLevel.Information,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((value, _) => value.ToString()!.Contains("Calculation started")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()));
     }
 
     [Fact]
@@ -66,16 +70,9 @@ public class FeeCalculatorUnitTests
     {
         // Arrange
 
-        FeeOptions feeOptions = new();
-        var options = Options.Create(feeOptions);
-        options.Value.BaseRate = 0.05m;
-        options.Value.MaxFee = 250.0m;
-        options.Value.PreferredCustomerDiscount = 0.01m;
-
-        Mock<ILogger<FeeCalculatorAppService>> loggerMock = new();
-
-        const decimal inputAmount = 100000m;
-        const bool preferredCustomer = true;
+        ArrangeFeeOptions();
+        inputAmount = 100000m;
+        preferredCustomer = true;
 
         FeeCalculatorAppService appService = new(options, loggerMock.Object);
 
@@ -86,5 +83,29 @@ public class FeeCalculatorUnitTests
 
         Assert.Equal(options.Value.MaxFee, result.CalculatedFee);
         Assert.True(result.FeeCapped);
+
+        loggerMock.Verify(logger =>
+            logger.Log(
+                LogLevel.Information,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((value, _) => value.ToString()!.Contains("Calculation started")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()));
+
+        loggerMock.Verify(logger =>
+            logger.Log(
+                LogLevel.Warning,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((value, _) => value.ToString()!.Contains("Calculation capped")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()));
+    }
+
+    private void ArrangeFeeOptions()
+    {
+        FeeOptions feeOptions = new();
+        options = Options.Create(feeOptions);
+        options.Value.BaseRate = 0.05m;
+        options.Value.MaxFee = 250.0m;
     }
 }

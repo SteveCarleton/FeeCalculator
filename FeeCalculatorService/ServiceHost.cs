@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Scc.FeeCalculator.AppServices;
 using Scc.FeeCalculator.Configuration;
@@ -8,7 +6,7 @@ namespace Scc.FeeCalculator;
 
 public class ServiceHost
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         using var loggerFactory = LoggerFactory.Create(static builder =>
         {
@@ -20,7 +18,7 @@ public class ServiceHost
         });
 
         ILogger logger = loggerFactory.CreateLogger<ServiceHost>();
-        logger.LogInformation($"FeeCalculator app started: {DateTime.Now}");
+        logger.LogInformation($"FeeCalculator Service Started: {DateTime.Now}");
 
         var builder = WebApplication.CreateBuilder(args);
 
@@ -43,19 +41,15 @@ public class ServiceHost
             FeeOptions options = new();
             config.GetSection("FeeOptions").Bind(options);
 
-            return Options.Create(options); // return new OptionsWrapper<AppSettings>(appSettings)
+            return Options.Create(options);
         });
 
         builder.Services.AddScoped<IFeeCalculatorAppService, FeeCalculatorAppService>();
 
-        builder.Services
-            //.AddHealthChecks();
-            .AddHealthChecks()
-                .AddCheck<MyHealthCheck>("MyHealthCheck");
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
+
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
@@ -76,20 +70,12 @@ public class ServiceHost
 
         app.MapControllers();
 
-        app.MapGet("/health", () => "{\"status\":\"okay\"}");
+        app.MapGet("/health", () => """
+            {"status":"okay"}
+        """);
 
-        app.Run();
-        logger.LogInformation($"FeeCalculator app ended: {DateTime.Now}");
-    }
-}
+        await app.RunAsync();
 
-
-public class MyHealthCheck : IHealthCheck
-{
-    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context,
-        CancellationToken cancellationToken = default)
-    {
-        //return Task.FromResult(HealthCheckResult.Healthy("{\"status\": \"ok\"}"));
-        return Task.FromResult(HealthCheckResult.Healthy("WWWWW"));
+        logger.LogInformation($"FeeCalculator Service Ended: {DateTime.Now}");
     }
 }
