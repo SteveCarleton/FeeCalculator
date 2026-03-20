@@ -8,3 +8,7 @@ Run from Visual Studio or use the command line:
 
 Test from Visual Studio or use the command line:
 >FeeCalculatorService.UnitTests dotnet test
+
+Further Work:
+- Containerizing the service
+- Storing the calculated results in a database
