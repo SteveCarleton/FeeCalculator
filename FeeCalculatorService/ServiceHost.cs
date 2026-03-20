@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Scc.FeeCalculator.AppServices;
 using Scc.FeeCalculator.Configuration;
@@ -46,6 +48,11 @@ public class ServiceHost
 
         builder.Services.AddScoped<IFeeCalculatorAppService, FeeCalculatorAppService>();
 
+        builder.Services
+            //.AddHealthChecks();
+            .AddHealthChecks()
+                .AddCheck<MyHealthCheck>("MyHealthCheck");
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -69,7 +76,20 @@ public class ServiceHost
 
         app.MapControllers();
 
+        app.MapGet("/health", () => "{\"status\":\"okay\"}");
+
         app.Run();
         logger.LogInformation($"FeeCalculator app ended: {DateTime.Now}");
+    }
+}
+
+
+public class MyHealthCheck : IHealthCheck
+{
+    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context,
+        CancellationToken cancellationToken = default)
+    {
+        //return Task.FromResult(HealthCheckResult.Healthy("{\"status\": \"ok\"}"));
+        return Task.FromResult(HealthCheckResult.Healthy("WWWWW"));
     }
 }
