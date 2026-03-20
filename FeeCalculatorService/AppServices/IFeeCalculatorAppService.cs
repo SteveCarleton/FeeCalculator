@@ -1,6 +1,6 @@
-﻿using Scc.FeeCalculator.Results;
+﻿using Scc.FeeCalculatorService.Results;
 
-namespace Scc.FeeCalculator.AppServices;
+namespace Scc.FeeCalculatorService.AppServices;
 
 public interface IFeeCalculatorAppService
 {

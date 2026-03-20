@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
-using Scc.FeeCalculator.AppServices;
-using Scc.FeeCalculator.Results;
+using Scc.FeeCalculatorService.AppServices;
+using Scc.FeeCalculatorService.Results;
 
-namespace Scc.FeeCalculator.Controllers;
+namespace Scc.FeeCalculatorService.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class FeesController : ControllerBase
 {
     [HttpGet(Name = "Estimate")]
-    public IActionResult Get(IFeeCalculatorAppService calculator, [FromQuery] decimal amount, [FromQuery] bool preferred)
+    public IActionResult Get(IFeeCalculatorAppService calculator, [FromQuery] decimal amount, [FromQuery] bool preferred = false)
     {
         FeeResult result;
 

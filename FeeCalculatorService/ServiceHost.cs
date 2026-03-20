@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Options;
-using Scc.FeeCalculator.AppServices;
-using Scc.FeeCalculator.Configuration;
+using Scc.FeeCalculatorService.AppServices;
+using Scc.FeeCalculatorService.Configuration;
 
-namespace Scc.FeeCalculator;
+namespace Scc.FeeCalculatorsService;
 
 public class ServiceHost
 {

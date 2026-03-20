@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.Options;
-using Scc.FeeCalculator.Configuration;
-using Scc.FeeCalculator.Results;
+using Scc.FeeCalculatorService.Configuration;
+using Scc.FeeCalculatorService.Results;
 
-namespace Scc.FeeCalculator.AppServices;
+namespace Scc.FeeCalculatorService.AppServices;
 
 public class FeeCalculatorAppService(IOptions<FeeOptions> options, ILogger<FeeCalculatorAppService> logger) : IFeeCalculatorAppService
 {
     private readonly IOptions<FeeOptions> _options = options;
     private readonly ILogger<FeeCalculatorAppService> _logger = logger;
 
-    public FeeResult Calculate(decimal amount, bool preferredCustomer)
+    public FeeResult Calculate(decimal amount, bool preferredCustomer = false)
     {
         if (amount <= 0)
         {

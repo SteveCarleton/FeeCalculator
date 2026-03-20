@@ -1,4 +1,4 @@
-﻿namespace Scc.FeeCalculator.Configuration;
+﻿namespace Scc.FeeCalculatorService.Configuration;
 
 public class FeeOptions
 {

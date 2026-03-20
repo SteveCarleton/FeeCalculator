@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using Scc.FeeCalculator.AppServices;
-using Scc.FeeCalculator.Configuration;
-using Scc.FeeCalculator.Results;
+using Scc.FeeCalculatorService.AppServices;
+using Scc.FeeCalculatorService.Configuration;
+using Scc.FeeCalculatorService.Results;
 
 namespace FeeCalculatorService.UnitTests;
 

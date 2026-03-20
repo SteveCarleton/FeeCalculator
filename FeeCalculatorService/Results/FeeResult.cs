@@ -1,4 +1,4 @@
-﻿namespace Scc.FeeCalculator.Results;
+﻿namespace Scc.FeeCalculatorService.Results;
 
 public class FeeResult
 {
