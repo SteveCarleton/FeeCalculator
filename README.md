@@ -1,5 +1,5 @@
 # FeeCalculator Service
-Uses C# 14.0 and .NET 10.0.
+Uses C# 14 and .NET 10.
 
 A Swagger UI is available at https://localhost:57131/swagger when the service is running.
 
